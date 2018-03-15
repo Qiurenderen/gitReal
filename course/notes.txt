@@ -1,0 +1,73 @@
+git init
+git status
+./git/
+
+git add -A .
+git reset <filename> /* remove a file or files from the staging area */
+
+staging area:
+a place where we can group files together before we "commit" them to Git.
+commit:
+a commit is a snapshot of our repository.
+
+git add '*.txt' /*all new .txt file, recursively in subfolders*/
+the single quote is needed, otherwise shell will interpret *.txt as all .txt files in current directory. With the single quotation, git will interpret the command as all .txt files recursively in subfolders.
+
+Git doesn't care what you name your remotes, but it's typical to name your main one origin.
+
+git remote add origin <remote url: e.g. https://github.com/try-git/try.git>
+
+git push -u origin master
+-u is to tell git to remember the parameters, and "git push" will be enough
+
+/* ??? */
+Use the command 'git stash' to stash your changes, and 'git stash apply' to re-apply your changes after your pull.
+
+git diff
+show unstaged difference since last commit, e.g. just after git add,
+do git diff show nothing because all are just staged.
+
+git diff --staged
+to see the changes that just staged
+
+-- separates branch names from file names, in case there is any ambiguity (if you have a branch and a file with the same name). If there are no ambiguities, you don't need the --.
+
+Also this allows for file names that start with a -; these would otherwise be interpreted as command-line options.
+
+The '--'
+So you may be wondering, why do I have to use this '--' thing? git checkout seems to work fine without it. It's simply promising the command line that there are no more options after the '--'. This way if you happen to have a branch named octocat.txt, it will still revert the file, instead of switching to the branch of the same name.
+
+"git reset" did a great job of unstaging octodog.txt
+Files can be changed back to how they were at the last commit by using the command: 
+git checkout -- <target>
+
+
+git checkout -b new_branch
+to checkout and create a branch at the same time. This is the same thing as doing:
+git branch new_branch
+git checkout new_branch
+
+
+git rm -r folder_of_cats
+This will recursively remove all folders and files from the given directory.
+git rm also staged the removal.
+
+The '-a' option
+If you happen to delete a file without using 'git rm' you'll find that you still have to 'git rm' the deleted files from the working tree. You can save this step by using the '-a' option on 'git commit', which auto removes deleted files with the commit.
+git commit -am "Delete stuff"
+
+
+Pull Requests
+If you're hosting your repo on GitHub, you can do something called a pull request.
+A pull request allows the boss of the project to look through your changes and make comments before deciding to merge in the change. It's a really great feature that is used all the time for remote workers and open-source projects. Check out the pull request help page for more information.
+
+git merge <branch>
+merge from branch to master if in master
+
+
+Force delete
+What if you have been working on a feature branch and you decide you really don't want this feature anymore? You might decide to delete the branch since you're scrapping the idea. You'll notice that git branch -d bad_feature doesn't work. This is because -d won't let you delete something that hasn't been merged.
+You can either add the --force (-f) option or use -D which combines -d -f together into one command.
+
+
+

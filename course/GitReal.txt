@@ -1,0 +1,70 @@
+git levels:
+working directory -> Staging Area/Index -> Local Repository -> Remote Repo
+    modified                 add                commit          push/pull
+                                                 HEAD
+                                               reset --soft
+                        reset --mixed          reset --mixed
+   reset --hard         reset --hard           reest --hard
+
+
+HEAD: 
+snapshot of the most recent commit made to the current branch
+
+Staging Area / Index:
+the set of files that will become the next commit, i.e. the commit that will become HEAD's parent
+
+Working Copy / Working Directory
+current files working on
+
+https://davidzych.com/difference-between-git-reset-soft-mixed-and-hard/
+
+undoing a commit to previous snapshot
+
+git reset --soft HEAD^
+git reset --hard HEAD^
+git reset HEAD^
+
+by default is --mixed and need not to specify.
+HEAD~2 also works
+
+--soft: reset only HEAD to another commit, Index, working copy are not touched
+--mixed: by default is --mixed, no need to specify. reset HEAD, Index, to another commit, working copy is not touched
+--hard: all reset to another commit, working copy will be lost!
+
+level 1:
+git add "*.txt"
+git config --list
+git config --global user.name "Botao Jia"
+git config --global user.email botao.jia@gmail.com
+
+
+level 4:
+git pull = 2 steps:
+step 1: git fetch
+step 2: git merge origin/master
+
+level 5:
+git branch -r
+git push weasel :origin  /* removing weasel branch on origin*/
+git remote show origin
+git remote prune origin
+git branch -D local_branc
+
+create and push branch:
+git checkout -b a_new_branch
+git push origin a_new_branch
+
+check out new branch:
+git pull
+git branch -r
+git checkout a_new_branch
+
+show branch:
+git remote show origin
+
+delete remote branch, local branch will not be touched
+git push origin :shopping_cart
+git branch -d shopping_cart
+git branch -D shopping_cart
+
+
