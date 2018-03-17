@@ -73,3 +73,7 @@ git checkout -b new_branch /* creating and switching to a new branch */
 need to read
 https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell
 https://stackoverflow.com/questions/12613793/why-is-there-a-remotes-origin-head-origin-master-entry-in-my-git-branch-l/18746099
+
+
+git real 2
+git rebase -i HEAD^3
