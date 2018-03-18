@@ -57,6 +57,11 @@ git remote rm my_branch  /* remove a remote URL from local repository */
 checkout affects working directory and Index?
 reset only reset index ?
 
+level 3:
+git clone URL <name>
+git remote -v
+
+
 level 4:
 git pull = 2 steps:
 step 1: git fetch
