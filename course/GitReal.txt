@@ -60,7 +60,7 @@ reset only reset index ?
 level 3:
 git clone URL <name>
 git remote -v
-
+git branch -d <branch> /* delete branch locally */
 
 level 4:
 git pull = 2 steps:
@@ -68,7 +68,14 @@ step 1: git fetch
 step 2: git merge origin/master
 
 level 5:
-git branch -r
+git branch -r  /* list or delete -d the remote-tracking branches */
+
+getting new branch to local repo after "git pull".
+"git branch -r" to show new branches
+"git checkout <remote branch>" to switch and start to track the <remote branch>.
+
+git remote show origin /* this even shows which remote branch is out of date */
+
 git push weasel :origin  /* removing weasel branch on origin*/
 git remote show origin
 git remote prune origin
