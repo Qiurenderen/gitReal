@@ -8,7 +8,7 @@ working directory -> Staging Area/Index -> Local Repository -> Remote Repo
 
 
 HEAD: 
-snapshot of the most recent commit made to the current branch
+pointer of snapshot of the most recent commit made to the current branch
 
 Staging Area / Index:
 the set of files that will become the next commit, i.e. the commit that will become HEAD's parent
@@ -18,7 +18,7 @@ current files working on
 
 https://davidzych.com/difference-between-git-reset-soft-mixed-and-hard/
 
-undoing a commit to previous snapshot
+undoing a commit to previous snapshot, this modified local history
 
 git reset --soft HEAD^
 git reset --hard HEAD^
@@ -37,6 +37,25 @@ git config --list
 git config --global user.name "Botao Jia"
 git config --global user.email botao.jia@gmail.com
 
+level 2:
+https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified
+git reset HEAD -- <file> <file>   
+/* 
+unstage files only, copy from HEAD to Index, 
+thinking git add copy from working dir to Index
+-- make sure they are files, not branches
+*/
+git reset eb43 -- file.txt
+/* reset to a particular version of file.txt, copy from a commit to index */
+
+git reset --soft/hard/mixed(default) HEAD  /* affects all, read above  */
+git remote add origin https://github.com/exmple.git
+git remote -v
+git remote rm origin     /* remove a remote URL from local repository */
+git remote rm my_branch  /* remove a remote URL from local repository */
+
+checkout affects working directory and Index?
+reset only reset index ?
 
 level 4:
 git pull = 2 steps:

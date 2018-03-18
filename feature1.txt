@@ -1,1 +1,6 @@
 adding file for feature branch
+sdfsd
+another conflict line
+first commit v1
+third commit v3
+forth commit v4, and delete v1,v2
