@@ -1,0 +1,99 @@
+lspci
+Ralink Technology, Corp. RT5372 Wireless Adapter, usb. 300Mbps
+Verizon Fios Router Actiontec MI424WR, 130Mbps
+
+measured wireless bandwidth is only 700 kB/s, using dd and nc
+
+send data:
+dd if=/dev/zero bs=1MB count=10 | nc CBS 5001
+receive data:
+nc -l 5001 >/dev/null
+
+flaw:
+two pipes and two instances on same box introducing latency
+
+send data:
+time nc CBS 5001 < a_big_file
+receive data:
+nc -l 5001 >/dev/null
+
+has to run twice. big file is cached in memory and only one instance nc to send data.
+2X faster speed.
+
+nc: openbsd
+ncat: linux
+
+ttcp example kernel function called:
+1. socket
+2. bind
+3. listen
+4. accept
+5. connect
+5. setsockopt
+6. write
+8. read
+
+bzero, close, free/malloc, perror
+telnet, what and how, details
+
+interface:
+1. socket
+
+#include <sys/socket.h>
+int socket(int domain/family, int type, int protocol)
+
+domain:   PF_INET, PF_LOCAL (unix domain protocols)
+type:     SOCK_DGRAM, SOCK_STREAM, SOCK_RAW
+protocol: IPPROTO_TCP, IPPROTO_UDP
+return:   socket file descriptor
+
+PF_xxx is for creating socket only, protocol family
+AF_xxx is for assigning sockaddr_in/sockaddr address structure
+
+Historically, one protocol family is designed to potentially support multiple address family. But this never happened and in <bits/socket.h> header, the OS specific header, PF_xxx is set equal to AF_xxx.
+
+#define	AF_INET		PF_INET
+#define	AF_LOCAL	PF_LOCAL
+
+As a common practice, creating socket using PF_xxx, and creating a protocol-specific address structure, sockaddr/sockaddr_in using AF_xxx. But they are actually the same value.
+This concludes the PF_xxx vs. AF_xxx.
+
+2. bind
+#include <sys/socket.h>
+int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen)
+
+sockfd:  socket file descriptor
+addr:    sockaddr_in address (or, in general a protocol specific address structure) and port that need to bound the sockfd to
+addrlen: size of of the sockaddr_in structure
+return:  0 if OK, -1 on error.
+
+INADDR_ANY 0, any interface, to be decided by OS.
+
+3. listen
+cat /proc/sys/net/core/somaxconn             complete connection queued waiting to be accepted, accept can return, backlog limits is this value
+cat /proc/sys/net/ipv4/tcp_max_syn_backlog   incomplete connection queued
+
+
+5. connect
+#include <sys/socket.h>
+int connect(int sockfd, const struct sockaddr *servaddr, socklen_t addrlen)
+
+return: 0 if OK, -1 on error
+connect function initiates TCP's three-way hand-shake.
+if bind is not called before connect is called, then kernel will pick ephermeral port and source IP address.
+
+errors:
+a.server does not exisit on destination, no response to SYN, ETIMEDOUT
+b.server exisits but server process is not running at port, RST was received immediately
+c.server is not reachable. ICMP "destination unreachable". EHOSTUNREACH/ENETUNREACH
+
+question:
+read, write vs send, recv, vs. sendto recvfrom
+and other IO functions
+
+unp chapter 5. chapter 2, why a process already terminated, but with a TCP at stage FIN_WAIT_2, the TCP will just gone after a while. The final stage is not TIME_WAIT, why?
+
+select vs stdio user vs kernel buffer
+read(2) is kernel call, kernel buffer
+getc(3) is user call, user buffer
+http://www.cppblog.com/mysileng/archive/2013/01/15/197284.html

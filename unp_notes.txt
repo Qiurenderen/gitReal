@@ -1,0 +1,9 @@
+exercise 4.2
+#include <sys/socket.h>
+int getsockname(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+the addrlen is a return-value argument, which should be initialized to indicate the amount of spaces in bytes pointed to by addr pointer. On return addrlen contains the actual size of the socket address.
+
+range of ephemeral port on linux kernel: 32768 to 65535
+
+exercise 4.3
+"accept(2)" returns EINVAL if the first argument sockfd is not a listenning socket, i.e. listen is not called.
